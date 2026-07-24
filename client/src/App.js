@@ -9,12 +9,12 @@ const logoImg = require('./WhatsApp Image 2026-07-20 at 9.49.24 PM.jpeg');
 // Distinct Image Bundles to keep Services and Gallery completely unique
 const HERO_IMAGES = {
   heroMain: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1600&q=80',
-  livingRoom: 'https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=800&q=80',
-  modernVilla: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
+  livingRoom: 'https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRBYiu3e33hUhhy_7ETWANn2r4oS0rRqYYBYZ9lIrZjOLTxqzNr74m7sAm1KOKWv-ftKOABtt5ILtK-y6hGi3Wfh6b5EV5jtw',
+  modernVilla: 'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSD6r2wbMCJedgug_vZL3TNrtDOvA4G0PM8nt73uVxOIi7XeUiLb2NgKD8MOi_vEbzR3xBnv6VB09Xy__2X5Z1vENozE1dk',
 };
 
 const SERVICE_IMAGES = {
-  tailoring: 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=800&q=80',
+  tailoring: 'https://tse4.mm.bing.net/th/id/OIP.Vg5SUqu2mOqDlGlkjn4mbgHaHa?r=0&pid=Api&P=0&h=180',
   blackout: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80',
   mosquitoMesh: 'https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?auto=format&fit=crop&w=800&q=80',
   motorized: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80',
@@ -40,6 +40,14 @@ function App() {
   const [customerPhoto, setCustomerPhoto] = useState(null);
   const [photoPreview, setPhotoPreview] = useState('');
   const [submittedPhotos, setSubmittedPhotos] = useState([]);
+  const [contactName, setContactName] = useState('');
+  const [contactPhone, setContactPhone] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
+  const [contactInterest, setContactInterest] = useState('');
+  const [contactMessage, setContactMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [contactStatus, setContactStatus] = useState('');
+  const [contactError, setContactError] = useState('');
 
   // Spotlight animation timer
   useEffect(() => {
@@ -81,6 +89,55 @@ function App() {
 
     setSubmittedPhotos((prev) => [newPhoto, ...prev]);
     setActiveTab('gallery');
+  };
+
+  const handleContactChange = (field, value) => {
+    switch (field) {
+      case 'name':
+        setContactName(value);
+        break;
+      case 'phone':
+        setContactPhone(value);
+        break;
+      case 'email':
+        setContactEmail(value);
+        break;
+      case 'interest':
+        setContactInterest(value);
+        break;
+      case 'message':
+        setContactMessage(value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleContactSubmit = (event) => {
+    if (event && event.preventDefault) {
+      event.preventDefault();
+    }
+
+    setContactStatus('');
+    setContactError('');
+    setIsSubmitting(true);
+
+    const lines = [];
+    if (contactName) lines.push(`Name: ${contactName}`);
+    if (contactPhone) lines.push(`Phone: ${contactPhone}`);
+    if (contactEmail) lines.push(`Email: ${contactEmail}`);
+    if (contactInterest) lines.push(`Interest: ${contactInterest}`);
+    if (contactMessage) lines.push(`Message: ${contactMessage}`);
+    lines.push('I would like a free measurement visit.');
+
+    const text = encodeURIComponent(lines.join('\n'));
+    const phone = '917502718156';
+    const waLink = `https://wa.me/${phone}?text=${text}`;
+
+    setContactStatus('Opening WhatsApp to send your request. Press send to complete.');
+    setContactError('');
+    setIsSubmitting(false);
+    window.location.href = waLink;
   };
 
   // ZIP loader for Gallery
@@ -267,7 +324,7 @@ useEffect(() => {
         {activeTab === 'about' && <AboutPage setActiveTab={setActiveTab} />}
         {activeTab === 'services' && <ServicesPage setActiveTab={setActiveTab} />}
         {activeTab === 'gallery' && <GalleryPage zipImages={zipImages} isLoading={isLoadingZip} setActiveTab={setActiveTab} uploadedPhotos={submittedPhotos} />}
-        {activeTab === 'contact' && <ContactPage customerPhoto={customerPhoto} photoPreview={photoPreview} onPhotoUpload={handlePhotoUpload} onSubmitPhoto={handlePhotoSubmit} />}
+        {activeTab === 'contact' && <ContactPage customerPhoto={customerPhoto} photoPreview={photoPreview} onPhotoUpload={handlePhotoUpload} onSubmitPhoto={handleContactSubmit} contactName={contactName} contactPhone={contactPhone} contactEmail={contactEmail} contactInterest={contactInterest} contactMessage={contactMessage} onContactChange={handleContactChange} isSubmitting={isSubmitting} contactStatus={contactStatus} contactError={contactError} />}
       </main>
 
       {/* FOOTER WITH SOCIAL MEDIA LOGOS */}
@@ -416,12 +473,12 @@ const HomePage = ({ setActiveTab }) => (
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px,1fr))', gap: '25px' }}>
           <div className="animated-card" style={{ background: '#121212', borderRadius: '10px', overflow: 'hidden', border: '1px solid #222' }}>
-            <img src={HERO_IMAGES.livingRoom} alt="Living Room" style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
-            <div style={{ padding: '25px' }}><h4 className="gold-text">Living Room Floor-Length Drapes</h4><p style={{ color: '#888', fontSize: '0.9rem', marginTop: '5px' }}>Grand double-height drape installations.</p></div>
+            <img src={HERO_IMAGES.livingRoom} alt="Curtains and mosquito net" style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
+            <div style={{ padding: '25px' }}><h4 className="gold-text">Curtains and Window Mosquito Net</h4><p style={{ color: '#888', fontSize: '0.9rem', marginTop: '5px' }}>Luxury drapes paired with protective mosquito netting.</p></div>
           </div>
           <div className="animated-card" style={{ background: '#121212', borderRadius: '10px', overflow: 'hidden', border: '1px solid #222' }}>
-            <img src={HERO_IMAGES.modernVilla} alt="Villa Setup" style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
-            <div style={{ padding: '25px' }}><h4 className="gold-text">Modern Villa Window Treatments</h4><p style={{ color: '#888', fontSize: '0.9rem', marginTop: '5px' }}>Seamless integration with modern architecture.</p></div>
+            <img src={HERO_IMAGES.modernVilla} alt="Curtains and net" style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
+            <div style={{ padding: '25px' }}><h4 className="gold-text">Window Curtains with Mesh Protection</h4><p style={{ color: '#888', fontSize: '0.9rem', marginTop: '5px' }}>High-end curtains with sleek mosquito mesh integration.</p></div>
           </div>
         </div>
       </div>
@@ -659,102 +716,73 @@ const ServicesPage = ({ setActiveTab }) => (
       <p style={{ color: '#aaa', fontSize: '1.1rem' }}>Detailed breakdown of bespoke tailoring services, mosquito mesh installation, and track engineering.</p>
     </section>
 
-    {/* Section 2: Hardware & Track Infrastructure Showcase */}
+    {/* Section 2: Window & Insect Protection Solutions */}
     <section style={{ background: '#121212', border: '1px solid #333', padding: '35px', borderRadius: '12px', marginBottom: '70px' }}>
-      <h2 className="gold-text" style={{ textAlign: 'center', marginBottom: '10px' }}>Track & Mounting Hardware Architecture</h2>
-      <p style={{ color: '#888', textAlign: 'center', marginBottom: '30px' }}>Engineered support systems for effortless drape glides and bug netting installation</p>
+      <h2 className="gold-text" style={{ textAlign: 'center', marginBottom: '10px' }}>Premium Window & Insect Protection Solutions</h2>
+      <p style={{ color: '#888', textAlign: 'center', marginBottom: '30px' }}>Elegant curtains and premium mosquito protection systems designed for every modern home.</p>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px' }}>
         <div className="animated-card" style={{ background: '#080808', border: '1px solid #222', borderRadius: '8px', padding: '20px', textAlign: 'center' }}>
-          <h4 className="gold-text" style={{ marginBottom: '8px' }}>Heavy Aluminum Tracks</h4>
-          <p style={{ color: '#888', fontSize: '0.85rem' }}>Rust-proof dual/triple rail channels for combined sheer and blackout drapes.</p>
+          <h4 className="gold-text" style={{ marginBottom: '8px' }}>Luxury Curtains</h4>
+          <p style={{ color: '#888', fontSize: '0.85rem' }}>Enhance your interiors with premium blackout, sheer, eyelet, and designer curtains available in a wide range of colors and fabrics.</p>
         </div>
         <div className="animated-card" style={{ background: '#080808', border: '1px solid #222', borderRadius: '8px', padding: '20px', textAlign: 'center' }}>
-          <h4 className="gold-text" style={{ marginBottom: '8px' }}>Recessed Ceiling Channels</h4>
-          <p style={{ color: '#888', fontSize: '0.85rem' }}>Concealed architectural track slots built flush into modern false ceilings.</p>
+          <h4 className="gold-text" style={{ marginBottom: '8px' }}>Mosquito Window Nets</h4>
+          <p style={{ color: '#888', fontSize: '0.85rem' }}>Durable, breathable mosquito window screens that provide maximum insect protection while allowing fresh air and natural light.</p>
         </div>
         <div className="animated-card" style={{ background: '#080808', border: '1px solid #222', borderRadius: '8px', padding: '20px', textAlign: 'center' }}>
-          <h4 className="gold-text" style={{ marginBottom: '8px' }}>Magnetic Mesh Frames</h4>
-          <p style={{ color: '#888', fontSize: '0.85rem' }}>Snug magnetic perimeter strip locking for zero gap mosquito protection.</p>
+          <h4 className="gold-text" style={{ marginBottom: '8px' }}>Mosquito Door Nets</h4>
+          <p style={{ color: '#888', fontSize: '0.85rem' }}>Magnetic and sliding mosquito door nets designed for easy access, long-lasting durability, and complete insect protection.</p>
         </div>
       </div>
     </section>
 
-    {/* Section 3: Deep Service 1 - Custom Drapery Tailoring */}
+    {/* Section 3: Premium Curtain Collection */}
     <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '40px', alignItems: 'center', marginBottom: '70px' }}>
-      <img src={SERVICE_IMAGES.tailoring} alt="Stitching Service" style={{ width: '100%', borderRadius: '10px', border: '1px solid #333' }} />
+      <img src={"https://cb.scene7.com/is/image/Crate/cb_dCL_20220913_CurtainCollections_Lindstrom?wid=1609&qlt=80&op_sharpen=1&bfc=on"} alt="Stitching Service" style={{ width: '100%', borderRadius: '10px', border: '1px solid #333' }} />
       <div>
-        <h2 className="gold-text" style={{ fontSize: '2rem', marginBottom: '15px' }}>1. Bespoke Curtain Tailoring Service</h2>
+        <h2 className="gold-text" style={{ fontSize: '2rem', marginBottom: '15px' }}>Premium Curtain Collection</h2>
         <p style={{ color: '#aaa', lineHeight: '1.8', marginBottom: '15px' }}>
-          Hand-stitched drapes designed precisely around your room's ceiling height, floor clearance, and window width. We craft pinch pleat, box pleat, ripplefold, and grommet eyelet styles.
+          Transform your interiors with premium-quality curtains designed for elegance, comfort, and privacy. We offer customized curtain solutions to perfectly match every room and style.
         </p>
         <ul style={{ color: '#ddd', fontSize: '0.92rem', lineHeight: '2', paddingLeft: '20px' }}>
-          <li>Double-bottom weighted hems for linear vertical drops</li>
-          <li>Custom lining attachments (Sheer, Satin, or Thermal)</li>
-          <li>Reinforced heading tapes for long-lasting pleat structural memory</li>
+          <li>Blackout Curtains</li>
+          <li>Sheer Curtains</li>
+          <li>Eyelet &amp; Pleated Curtains</li>
+          <li>Custom Size &amp; Color Options</li>
         </ul>
       </div>
     </section>
 
-    {/* Section 4: Deep Service 2 - Mosquito Mesh & Netting Installations */}
+    {/* Section 4: Mosquito Window Nets */}
     <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '40px', alignItems: 'center', marginBottom: '70px' }}>
       <div>
-        <h2 className="gold-text" style={{ fontSize: '2rem', marginBottom: '15px' }}>2. Mosquito Screen Door & Window Systems</h2>
+        <h2 className="gold-text" style={{ fontSize: '2rem', marginBottom: '15px' }}>2. Mosquito Window Nets</h2>
         <p style={{ color: '#aaa', lineHeight: '1.8', marginBottom: '15px' }}>
-          Engineered protection against mosquitoes, flies, and pests without blocking outdoor sunlight or fresh air flow.
+          Keep your home fresh and insect-free with durable mosquito window nets. Designed for maximum ventilation while preventing mosquitoes, flies, and other insects from entering.
         </p>
         <ul style={{ color: '#ddd', fontSize: '0.92rem', lineHeight: '2', paddingLeft: '20px' }}>
-          <li>Pleated Accordion Sliding Nets for French doors & balconies</li>
-          <li>Velcro-detachable washable mesh frames for easy cleaning</li>
-          <li>High-strength SS304 anti-claw pet mesh options</li>
+          <li>Magnetic Door Nets</li>
+          <li>Sliding Door Mesh</li>
+          <li>Heavy-Duty Aluminum Frame</li>
+          <li>Long-Lasting Insect Protection</li>
         </ul>
       </div>
-      <img src={SERVICE_IMAGES.mosquitoMesh} alt="Mosquito Net Service" style={{ width: '100%', borderRadius: '10px', border: '1px solid #333' }} />
+      <img src={"https://img.lazcdn.com/g/p/fefb27c824e57febd65b6d89cd3bb485.jpg_720x720q80.jpg"} alt="Mosquito Net Service" style={{ width: '100%', borderRadius: '10px', border: '1px solid #333' }} />
     </section>
 
     {/* Section 5: Deep Service 3 - Thermal & 100% Blackout Line */}
     <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '40px', alignItems: 'center', marginBottom: '70px' }}>
-      <img src={SERVICE_IMAGES.blackout} alt="Blackout Service" style={{ width: '100%', borderRadius: '10px', border: '1px solid #333' }} />
+      <img src={"https://cpimg.tistatic.com/07971043/b/4/Door-Magnetic-Mosquito-Net.jpg"} alt="Blackout Service" style={{ width: '100%', borderRadius: '10px', border: '1px solid #333' }} />
       <div>
-        <h2 className="gold-text" style={{ fontSize: '2rem', marginBottom: '15px' }}>3. Thermal & Sound Blackout Installation</h2>
+        <h2 className="gold-text" style={{ fontSize: '2rem', marginBottom: '15px' }}>3. Mosquito Window Nets</h2>
         <p style={{ color: '#aaa', lineHeight: '1.8', marginBottom: '15px' }}>
-          Specially coated 3-pass blackout linings sewn directly into your main drapes to keep bedrooms pitch black and energy efficient.
+          Keep your home fresh and insect-free with durable mosquito window nets. Designed for maximum ventilation while preventing mosquitoes, flies, and other insects from entering.
         </p>
         <ul style={{ color: '#ddd', fontSize: '0.92rem', lineHeight: '2', paddingLeft: '20px' }}>
-          <li>100% Light cutoff ideal for night-shift sleep & home theaters</li>
-          <li>Blocks up to 40% solar heat transfer to reduce AC bills</li>
-          <li>Acoustic deadening layers to mute outdoor traffic noises</li>
-        </ul>
-      </div>
-    </section>
-
-    {/* Section 6: Deep Service 4 - Smart Motorized Curtain Tracks */}
-    <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '40px', alignItems: 'center', marginBottom: '70px' }}>
-      <div>
-        <h2 className="gold-text" style={{ fontSize: '2rem', marginBottom: '15px' }}>4. Motorized Smart Track Automation</h2>
-        <p style={{ color: '#aaa', lineHeight: '1.8', marginBottom: '15px' }}>
-          Upgrade your curtains with whisper-quiet motorized tracks controlled via remote control, smartphone app, or home automation systems.
-        </p>
-        <ul style={{ color: '#ddd', fontSize: '0.92rem', lineHeight: '2', paddingLeft: '20px' }}>
-          <li>Heavy-load motor capacity for large double-story windows</li>
-          <li>Touch-motion manual override (pull gently to auto-close)</li>
-          <li>Compatible with Alexa, Google Home, and smart relays</li>
-        </ul>
-      </div>
-      <img src={SERVICE_IMAGES.motorized} alt="Motorized Track" style={{ width: '100%', borderRadius: '10px', border: '1px solid #333' }} />
-    </section>
-
-    {/* Section 7: Deep Service 5 - Net Repair & Maintenance */}
-    <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '40px', alignItems: 'center', marginBottom: '70px' }}>
-      <img src={SERVICE_IMAGES.maintenance} alt="Maintenance Service" style={{ width: '100%', borderRadius: '10px', border: '1px solid #333' }} />
-      <div>
-        <h2 className="gold-text" style={{ fontSize: '2rem', marginBottom: '15px' }}>5. Re-Mesh & Track Maintenance</h2>
-        <p style={{ color: '#aaa', lineHeight: '1.8', marginBottom: '15px' }}>
-          Already have screen frames or curtain tracks installed? We offer replacement mesh fitting, cord repairs, track wheel lubrications, and drape steam ironing.
-        </p>
-        <ul style={{ color: '#ddd', fontSize: '0.92rem', lineHeight: '2', paddingLeft: '20px' }}>
-          <li>Replacement fiberglass wire re-tensioning</li>
-          <li>Broken track runner clip replacement</li>
-          <li>Curtain length alteration and re-hemming</li>
+          <li>Premium Invisible Mesh</li>
+          <li>Rust-Free Aluminum Frame</li>
+          <li>Smooth Sliding Design</li>
+          <li>Easy to Clean & Maintain</li>
         </ul>
       </div>
     </section>
@@ -888,7 +916,7 @@ const GalleryPage = ({ setActiveTab, uploadedPhotos }) => (
 /* ==========================================================================
    5. CONTACT PAGE (10 SECTIONS)
    ========================================================================== */
-const ContactPage = ({ customerPhoto, photoPreview, onPhotoUpload, onSubmitPhoto }) => (
+const ContactPage = ({ customerPhoto, photoPreview, onPhotoUpload, onSubmitPhoto, contactName, contactPhone, contactEmail, contactInterest, contactMessage, onContactChange, isSubmitting, contactStatus, contactError }) => (
   <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '40px 20px' }}>
     
     {/* Section 1: Intro */}
@@ -901,23 +929,23 @@ const ContactPage = ({ customerPhoto, photoPreview, onPhotoUpload, onSubmitPhoto
     {/* Section 2: Interactive Appointment Booking Form */}
     <section style={{ background: '#121212', border: '1px solid #333', padding: '40px', borderRadius: '12px', marginBottom: '50px' }}>
       <h2 className="gold-text" style={{ marginBottom: '20px' }}>Schedule Free On-Site Visit</h2>
-      <form style={{ display: 'grid', gap: '18px' }}>
+      <form style={{ display: 'grid', gap: '18px' }} onSubmit={onSubmitPhoto}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '15px' }}>
-          <input type="text" placeholder="Full Name" style={{ padding: '14px', background: '#080808', border: '1px solid #333', color: '#fff', borderRadius: '4px' }} />
-          <input type="tel" placeholder="Phone Number" style={{ padding: '14px', background: '#080808', border: '1px solid #333', color: '#fff', borderRadius: '4px' }} />
+          <input value={contactName} onChange={(e) => onContactChange('name', e.target.value)} type="text" placeholder="Full Name" style={{ padding: '14px', background: '#080808', border: '1px solid #333', color: '#fff', borderRadius: '4px' }} required />
+          <input value={contactPhone} onChange={(e) => onContactChange('phone', e.target.value)} type="tel" placeholder="Phone Number" style={{ padding: '14px', background: '#080808', border: '1px solid #333', color: '#fff', borderRadius: '4px' }} required />
         </div>
-        <input type="email" placeholder="Email Address" style={{ padding: '14px', background: '#080808', border: '1px solid #333', color: '#fff', borderRadius: '4px' }} />
-        <select style={{ padding: '14px', background: '#080808', border: '1px solid #333', color: '#aaa', borderRadius: '4px' }}>
-          <option>Select Primary Interest</option>
-          <option>Custom Window Drapes</option>
-          <option>Mosquito Mesh Doors & Windows</option>
-          <option>100% Thermal Blackout Curtains</option>
-          <option>Motorized Curtain Tracks</option>
-          <option>Both Curtains & Mosquito Mesh</option>
+        <input value={contactEmail} onChange={(e) => onContactChange('email', e.target.value)} type="email" placeholder="Email Address (optional)" style={{ padding: '14px', background: '#080808', border: '1px solid #333', color: '#fff', borderRadius: '4px' }} />
+        <select value={contactInterest} onChange={(e) => onContactChange('interest', e.target.value)} style={{ padding: '14px', background: '#080808', border: '1px solid #333', color: contactInterest ? '#fff' : '#aaa', borderRadius: '4px' }} required>
+          <option value="">Select Primary Interest</option>
+          <option value="Custom Window Drapes">Custom Window Drapes</option>
+          <option value="Mosquito Mesh Doors & Windows">Mosquito Mesh Doors & Windows</option>
+          <option value="100% Thermal Blackout Curtains">100% Thermal Blackout Curtains</option>
+          <option value="Motorized Curtain Tracks">Motorized Curtain Tracks</option>
+          <option value="Both Curtains & Mosquito Mesh">Both Curtains & Mosquito Mesh</option>
         </select>
-        <textarea placeholder="Describe window counts or custom requirements..." rows="4" style={{ padding: '14px', background: '#080808', border: '1px solid #333', color: '#fff', borderRadius: '4px' }}></textarea>
+        <textarea value={contactMessage} onChange={(e) => onContactChange('message', e.target.value)} placeholder="Describe window counts or custom requirements..." rows="4" style={{ padding: '14px', background: '#080808', border: '1px solid #333', color: '#fff', borderRadius: '4px' }} required></textarea>
         <label style={{ display: 'flex', flexDirection: 'column', gap: '8px', color: '#ccc', fontSize: '0.95rem' }}>
-          Attach a photo of your window or existing setup
+          Attach a photo of your window or existing setup (optional)
           <input type="file" accept="image/*" onChange={onPhotoUpload} style={{ color: '#fff', paddingTop: '4px' }} />
         </label>
         {photoPreview && (
@@ -928,7 +956,11 @@ const ContactPage = ({ customerPhoto, photoPreview, onPhotoUpload, onSubmitPhoto
             </p>
           </div>
         )}
-        <button type="button" className="btn-gold" style={{ padding: '16px', cursor: photoPreview ? 'pointer' : 'not-allowed', fontSize: '1rem', opacity: photoPreview ? 1 : 0.7 }} onClick={onSubmitPhoto} disabled={!photoPreview}>Submit Free Measurement Request</button>
+        {contactStatus && <p style={{ color: '#7dda8a', fontSize: '0.95rem', margin: '0 0 10px' }}>{contactStatus}</p>}
+        {contactError && <p style={{ color: '#ff6b6b', fontSize: '0.95rem', margin: '0 0 10px' }}>{contactError}</p>}
+        <button type="submit" className="btn-gold" style={{ padding: '16px', cursor: isSubmitting ? 'not-allowed' : 'pointer', fontSize: '1rem', opacity: isSubmitting ? 0.7 : 1 }} disabled={isSubmitting}>
+          {isSubmitting ? 'Sending Request...' : 'Submit Free Measurement Request'}
+        </button>
       </form>
     </section>
 
