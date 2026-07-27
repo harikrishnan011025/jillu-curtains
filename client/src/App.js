@@ -35,6 +35,7 @@ const GALLERY_IMAGES = {
 function App() {
   const [openingComplete, setOpeningComplete] = useState(false);
   const [activeTab, setActiveTab] = useState('home');
+  const [menuOpen, setMenuOpen] = useState(false);
   const [zipImages, setZipImages] = useState([]);
   const [isLoadingZip, setIsLoadingZip] = useState(true);
   const [customerPhoto, setCustomerPhoto] = useState(null);
@@ -303,21 +304,55 @@ useEffect(() => {
         <p style={{ color: '#aaa', fontSize: '0.85rem', letterSpacing: '2px', marginTop: '6px' }}>LUXURY DRAPES & INSECT SCREENS</p>
       </div>
 
-      {/* HEADER / NAVBAR */}
       <header className="navbar">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-          <img src={logoImg} alt="Logo" style={{ height: '42px', borderRadius: '4px' }} />
-          <span className="gold-text" style={{ fontSize: '1.3rem', fontWeight: 'bold', letterSpacing: '2px' }}>JILLU CURTAINS</span>
-        </div>
-        <ul className="nav-links">
-          {['home', 'about', 'services', 'gallery', 'contact'].map((tab) => (
-            <li key={tab} className={activeTab === tab ? 'active' : ''} onClick={() => setActiveTab(tab)}>
-              {tab.toUpperCase()}
-            </li>
-          ))}
-        </ul>
-      </header>
 
+  <div
+  className="menu-btn"
+  onClick={() => setMenuOpen(true)}
+>
+  ☰
+</div>
+  <div className="logo-container">
+    <img src={logoImg} alt="Logo" className="logo-img" />
+    <span className="gold-text logo-title">
+      JILLU CURTAINS
+    </span>
+  </div>
+
+</header>
+
+<>
+  {menuOpen && (
+    <div
+      className="overlay"
+      onClick={() => setMenuOpen(false)}
+    ></div>
+  )}
+
+  <div className={`sidebar ${menuOpen ? "open" : ""}`}>
+    <div
+      className="close-btn"
+      onClick={() => setMenuOpen(false)}
+    >
+      ✕
+    </div>
+
+    <ul className="nav-links">
+      {['home','about','services','gallery','contact'].map((tab)=>(
+        <li
+          key={tab}
+          className={activeTab===tab?'active':''}
+          onClick={()=>{
+            setActiveTab(tab);
+            setMenuOpen(false);
+          }}
+        >
+          {tab.toUpperCase()}
+        </li>
+      ))}
+    </ul>
+  </div>
+</>
       {/* DYNAMIC PAGE RENDER */}
       <main>
         {activeTab === 'home' && <HomePage setActiveTab={setActiveTab} />}
@@ -349,7 +384,7 @@ useEffect(() => {
               <p style={{ margin: 0 }}>📍 <strong>Address:</strong> Komarapalayam,Tamil nadu,India</p>
               <p style={{ margin: 0 }}>📞 <strong>Phone:</strong>+91 7502718156</p>
               <p style={{ margin: 0 }}>✉️ <strong>Email:</strong> jillucurtains1@gmail.com</p>
-              <p style={{ margin: 0 }}>🕒 <strong>Hours:</strong> Mon - Sun, 10 AM TO 6PM</p>
+              <p style={{ margin: 0 }}>🕒 <strong>Hours:</strong> Mon - Sun, 10AM TO 6PM</p>
             </div>
           </div>
 
@@ -360,7 +395,7 @@ useEffect(() => {
             <div style={{ display: 'flex', gap: '15px' }}>
               
               {/* Instagram SVG */}
-              <a href="https://www.instagram.com/__harikrishnan_dhanapal_/" target="_blank" rel="noreferrer noopener" className="social-logo-btn" title="Instagram">
+              <a href="https://www.instagram.com/jillucurtains/" target="_blank" rel="noreferrer noopener" className="social-logo-btn" title="Instagram">
                 <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                 </svg>
@@ -413,10 +448,10 @@ const HomePage = ({ setActiveTab }) => (
     }}>
       <div style={{ maxWidth: '900px' }}>
         <span className="section-badge">Craftsmanship Beyond Compare</span>
-        <h1 className="gold-text" style={{ fontSize: '3.6rem', marginBottom: '20px', fontWeight: 'bold', lineHeight: '1.2' }}>
+        <h1 className="gold-text" style={{ fontSize: '2.5rem', marginBottom: '1px', fontWeight: 'bold', lineHeight: '1.2' }}>
           Transform Your Windows Into Architectural Masterpieces
         </h1>
-        <p style={{ fontSize: '1.25rem', color: '#ddd', maxWidth: '750px', margin: '0 auto 35px', lineHeight: '1.7' }}>
+        <p style={{ fontSize: '1.0rem', color: '#ddd', maxWidth: '750px', margin: '0 auto 35px', lineHeight: '1.7' }}>
           Custom tailored luxury drapes, 100% thermal blackout control, and sleek accordion mosquito mesh systems for home and villa interiors.
         </p>
         <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -433,31 +468,31 @@ const HomePage = ({ setActiveTab }) => (
     {/* Section 2: Key Live Statistics Bar */}
     <section style={{ background: '#0e0e0e', borderTop: '1px solid #1f1f1f', borderBottom: '1px solid #1f1f1f', padding: '40px 20px' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '30px', textAlign: 'center' }}>
-        <div><h2 className="gold-text" style={{ fontSize: '2.5rem', margin: 0 }}>1,200+</h2><p style={{ color: '#888', marginTop: '5px' }}>Homes Fitted</p></div>
-        <div><h2 className="gold-text" style={{ fontSize: '2.5rem', margin: 0 }}>100%</h2><p style={{ color: '#888', marginTop: '5px' }}>Custom Measurement</p></div>
-        <div><h2 className="gold-text" style={{ fontSize: '2.5rem', margin: 0 }}>350+</h2><p style={{ color: '#888', marginTop: '5px' }}>Fabric Textures</p></div>
-        <div><h2 className="gold-text" style={{ fontSize: '2.5rem', margin: 0 }}>5 Years</h2><p style={{ color: '#888', marginTop: '5px' }}>Frame Warranty</p></div>
+        <div><h2 className="gold-text" style={{ fontSize: '2.0rem', margin: 0 }}>1,200+</h2><p style={{ color: '#888', marginTop: '5px' }}>Homes Fitted</p></div>
+        <div><h2 className="gold-text" style={{ fontSize: '2.0rem', margin: 0 }}>100%</h2><p style={{ color: '#888', marginTop: '5px' }}>Custom Measurement</p></div>
+        <div><h2 className="gold-text" style={{ fontSize: '2.0rem', margin: 0 }}>350+</h2><p style={{ color: '#888', marginTop: '5px' }}>Fabric Textures</p></div>
       </div>
     </section>
 
     {/* Section 3: Core Offering Triad */}
     <section style={{ padding: '90px 20px', maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
       <span className="section-badge">Our Specialties</span>
-      <h2 className="gold-text" style={{ fontSize: '2.5rem', marginBottom: '15px' }}>Tailored To Perfection</h2>
+      <h2 className="gold-text" style={{ fontSize: '2.0rem', marginBottom: '15px' }}>Tailored To Perfection</h2>
       <p style={{ color: '#888', maxWidth: '600px', margin: '0 auto 50px' }}>We do not do ready-made. Every piece is hand-measured and stitched for your exact window dimensions.</p>
       
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px' }}>
         <div className="animated-card" style={{ background: '#121212', border: '1px solid #222', padding: '35px', borderRadius: '10px', textAlign: 'left' }}>
-          <div style={{ fontSize: '2rem', marginBottom: '15px' }}>👑</div>
+          <div style={{ fontSize: '1.08rem', marginBottom: '15px' }}>👑</div>
           <h3 className="gold-text" style={{ marginBottom: '12px' }}>Luxury Custom Drapes</h3>
           <p style={{ color: '#aaa', fontSize: '0.95rem', lineHeight: '1.7' }}>Pinch pleat, box pleat, and eyelet curtains tailored in heavy jacquard, velvet, or pure linen.</p>
         </div>
         <div className="animated-card" style={{ background: '#121212', border: '1px solid #222', padding: '35px', borderRadius: '10px', textAlign: 'left' }}>
-          <div style={{ fontSize: '2rem', marginBottom: '15px' }}>🛡️</div>
+          <div style={{ fontSize: '1.08rem', marginBottom: '15px' }}>🛡️</div>
           <h3 className="gold-text" style={{ marginBottom: '12px' }}>Pleated Mosquito Netting</h3>
           <p style={{ color: '#aaa', fontSize: '0.95rem', lineHeight: '1.7' }}>High-tensile track-sliding mosquito mesh that keeps insects out while allowing unobstructed breeze.</p>
         </div>
         <div className="animated-card" style={{ background: '#121212', border: '1px solid #222', padding: '35px', borderRadius: '10px', textAlign: 'left' }}>
+           <div style={{ fontSize: '1.08rem', marginBottom: '15px' }}>🎪</div>
           <h3 className="gold-text" style={{ marginBottom: '12px' }}>Thermal Blackout Linings</h3>
           <p style={{ color: '#aaa', fontSize: '0.95rem', lineHeight: '1.7' }}>Multi-layer heat-blocking curtain backing designed for climate control and total privacy.</p>
         </div>
@@ -469,7 +504,7 @@ const HomePage = ({ setActiveTab }) => (
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '50px' }}>
           <span className="section-badge">Gallery Preview</span>
-          <h2 className="gold-text" style={{ fontSize: '2.5rem' }}>Interior Inspirations</h2>
+          <h2 className="gold-text" style={{ fontSize: '2.0rem' }}>Interior Inspirations</h2>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px,1fr))', gap: '25px' }}>
           <div className="animated-card" style={{ background: '#121212', borderRadius: '10px', overflow: 'hidden', border: '1px solid #222' }}>
@@ -489,7 +524,7 @@ const HomePage = ({ setActiveTab }) => (
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '50px', alignItems: 'center' }}>
         <div>
           <span className="section-badge">Material Excellence</span>
-          <h2 className="gold-text" style={{ fontSize: '2.4rem', marginBottom: '20px' }}>Engineered Fabrics & Durable Mesh</h2>
+          <h2 className="gold-text" style={{ fontSize: '2.0rem', marginBottom: '20px' }}>Engineered Fabrics & Durable Mosquito Net</h2>
           <p style={{ color: '#aaa', lineHeight: '1.8', marginBottom: '20px' }}>
             We source colorfast, dust-resistant textiles and high-density fiberglass mesh to ensure your window installations look stunning for years.
           </p>
@@ -511,7 +546,7 @@ const HomePage = ({ setActiveTab }) => (
     <section style={{ background: '#0e0e0e', padding: '90px 20px', textAlign: 'center', borderTop: '1px solid #1a1a1a' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <span className="section-badge">Seamless Execution</span>
-        <h2 className="gold-text" style={{ fontSize: '2.5rem', marginBottom: '50px' }}>Our 4-Step Precision Workflow</h2>
+        <h2 className="gold-text" style={{ fontSize: '2.0rem', marginBottom: '50px' }}>Our 4-Step Precision Workflow</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '25px' }}>
           <div className="animated-card" style={{ background: '#141414', padding: '30px', borderRadius: '10px', border: '1px solid #222' }}>
             <h1 className="gold-text" style={{ margin: '0 0 10px 0' }}>01</h1>
@@ -540,8 +575,8 @@ const HomePage = ({ setActiveTab }) => (
     {/* Section 7: Quality & Guarantee Comparison */}
     <section style={{ padding: '90px 20px', maxWidth: '1100px', margin: '0 auto' }}>
       <div style={{ textAlign: 'center', marginBottom: '50px' }}>
-        <span className="section-badge">Why Choose Jillu</span>
-        <h2 className="gold-text" style={{ fontSize: '2.5rem' }}>The Jillu Difference</h2>
+        <span className="section-badge">Why you need to Choose Jillu curtains</span>
+        <h2 className="gold-text" style={{ fontSize: '2.0rem' }}>The Difference is</h2>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '30px' }}>
         <div style={{ background: '#121212', border: '1px solid #333', padding: '30px', borderRadius: '10px' }}>
@@ -569,11 +604,11 @@ const HomePage = ({ setActiveTab }) => (
     <section style={{ background: '#0a0a0a', padding: '90px 20px', borderTop: '1px solid #1a1a1a', borderBottom: '1px solid #1a1a1a' }}>
       <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
         <span className="section-badge">Client Reviews</span>
-        <h2 className="gold-text" style={{ fontSize: '2.5rem', marginBottom: '30px' }}>Loved By Homeowners</h2>
+        <h2 className="gold-text" style={{ fontSize: '2.0rem', marginBottom: '30px' }}>Loved By Homeowners</h2>
         <blockquote style={{ fontSize: '1.2rem', color: '#ccc', fontStyle: 'italic', lineHeight: '1.8', margin: 0 }}>
           "Jillu Curtains outfitted our entire home. The blackout drapes in the master suite block every bit of morning light, and the sliding mosquito nets on our balcony doors operate so smoothly!"
         </blockquote>
-        <p className="gold-text" style={{ marginTop: '20px', fontWeight: 'bold' }}>— Rajesh & Meera K., Villa Owners</p>
+        <p className="gold-text" style={{ marginTop: '20px', fontWeight: 'bold' }}>— Rajesh &  Meera K., Villa Owners</p>
       </div>
     </section>
 
@@ -581,7 +616,7 @@ const HomePage = ({ setActiveTab }) => (
     <section style={{ padding: '90px 20px', maxWidth: '1000px', margin: '0 auto' }}>
       <div style={{ textAlign: 'center', marginBottom: '40px' }}>
         <span className="section-badge">Got Questions?</span>
-        <h2 className="gold-text" style={{ fontSize: '2.2rem' }}>Frequently Asked Questions</h2>
+        <h2 className="gold-text" style={{ fontSize: '2.0rem' }}>Frequently Asked Questions</h2>
       </div>
       <div style={{ display: 'grid', gap: '15px' }}>
         <div style={{ background: '#121212', padding: '20px', borderRadius: '8px', border: '1px solid #222' }}>
@@ -598,7 +633,7 @@ const HomePage = ({ setActiveTab }) => (
     {/* Section 10: Grand Home CTA */}
     <section style={{ background: 'linear-gradient(180deg, #0e0e0e 0%, #1c1708 100%)', padding: '90px 20px', textAlign: 'center' }}>
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-        <h2 className="gold-text" style={{ fontSize: '2.8rem', marginBottom: '15px' }}>Ready To Upgrade Your Living Space?</h2>
+        <h2 className="gold-text" style={{ fontSize: '2.5rem', marginBottom: '15px' }}>Ready To Upgrade Your Living Space?</h2>
         <p style={{ color: '#aaa', fontSize: '1.1rem', marginBottom: '35px' }}>Schedule a doorstep measurement visit with our expert curtain technicians today.</p>
         <button className="btn-gold" style={{ padding: '16px 42px', fontSize: '1rem', cursor: 'pointer' }} onClick={() => setActiveTab('contact')}>
           Book Free On-Site Consultation
@@ -615,7 +650,7 @@ const AboutPage = ({ setActiveTab }) => (
     {/* Section 1: Banner Header */}
     <section style={{ textAlign: 'center', marginBottom: '60px' }}>
       <span className="section-badge">Our Heritage</span>
-      <h1 className="gold-text" style={{ fontSize: '3rem', marginBottom: '15px' }}>About Jillu Curtains</h1>
+      <h1 className="gold-text" style={{ fontSize: '2.0rem', marginBottom: '15px' }}>About Jillu Curtains</h1>
       <p style={{ color: '#aaa', maxWidth: '750px', margin: '0 auto', fontSize: '1.1rem', lineHeight: '1.8' }}>
         A specialized workshop dedicated exclusively to custom drapery tailoring and advanced insect barrier engineering.
       </p>
@@ -624,12 +659,12 @@ const AboutPage = ({ setActiveTab }) => (
     {/* Section 2: Core Philosophy */}
     <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '40px', alignItems: 'center', marginBottom: '70px' }}>
       <div>
-        <h2 className="gold-text" style={{ fontSize: '2rem', marginBottom: '15px' }}>Master Drapery Craftsmanship</h2>
+        <h2 className="gold-text" style={{ fontSize: '1.8rem', marginBottom: '15px' }}>Master Drapery Craftsmanship</h2>
         <p style={{ color: '#888', lineHeight: '1.8' }}>
           At Jillu Curtains, we believe windows shape the soul of every room. We combine traditional tailoring precision with modern track systems to create window coverings that offer privacy, climate insulation, and timeless beauty.
         </p>
       </div>
-      <img src={SERVICE_IMAGES.tailoring} alt="Tailoring" style={{ width: '100%', borderRadius: '10px', border: '1px solid #333' }} />
+      <img src={"https://www.theshadestore.com/blog/wp-content/uploads/the-shade-store-ripple-fold-drapery-linen-natural-flat-roman-shade-sahara-stripe-desert-scandinavian-curtains-inviting-living-room-hero-2022-yorktown-950x630px.jpg.webp"} alt="Tailoring" style={{ width: '100%', borderRadius: '10px', border: '1px solid #333' }} />
     </section>
 
     {/* Section 3: In-House Tailoring Workshop */}
@@ -689,14 +724,14 @@ const AboutPage = ({ setActiveTab }) => (
 
     {/* Section 9: Achievements Stats */}
     <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', textAlign: 'center', marginBottom: '70px' }}>
-      <div style={{ padding: '25px', background: '#0e0e0e', border: '1px solid #222', borderRadius: '8px' }}><h1 className="gold-text" style={{ margin: 0 }}>10+</h1><p style={{ color: '#888' }}>Years Experience</p></div>
+      <div style={{ padding: '25px', background: '#0e0e0e', border: '1px solid #222', borderRadius: '8px' }}><h1 className="gold-text" style={{ margin: 0 }}>15+</h1><p style={{ color: '#888' }}>Years Experience</p></div>
       <div style={{ padding: '25px', background: '#0e0e0e', border: '1px solid #222', borderRadius: '8px' }}><h1 className="gold-text" style={{ margin: 0 }}>5,000+</h1><p style={{ color: '#888' }}>Drapes Stitched</p></div>
       <div style={{ padding: '25px', background: '#0e0e0e', border: '1px solid #222', borderRadius: '8px' }}><h1 className="gold-text" style={{ margin: 0 }}>100%</h1><p style={{ color: '#888' }}>Satisfaction Focus</p></div>
     </section>
 
     {/* Section 10: About CTA */}
     <section style={{ textAlign: 'center', background: '#121212', padding: '50px 20px', borderRadius: '12px', border: '1px solid #333' }}>
-      <h2 className="gold-text" style={{ fontSize: '2.2rem', marginBottom: '15px' }}>Work With Custom Drapery Experts</h2>
+      <h2 className="gold-text" style={{ fontSize: '2.0rem', marginBottom: '15px' }}>Work With Custom Drapery Experts</h2>
       <p style={{ color: '#aaa', marginBottom: '25px' }}>Let us guide you through fabric selection, light control, and window protection.</p>
       <button className="btn-gold" style={{ padding: '14px 35px' }} onClick={() => setActiveTab('contact')}>Contact Our Team</button>
     </section>
@@ -712,7 +747,7 @@ const ServicesPage = ({ setActiveTab }) => (
     {/* Section 1: Title Header */}
     <section style={{ textAlign: 'center', marginBottom: '60px' }}>
       <span className="section-badge">Engineering & Tailoring</span>
-      <h1 className="gold-text" style={{ fontSize: '3rem', marginBottom: '10px' }}>Our Services & Solutions</h1>
+      <h1 className="gold-text" style={{ fontSize: '2.0rem', marginBottom: '10px' }}>Our Services & Solutions</h1>
       <p style={{ color: '#aaa', fontSize: '1.1rem' }}>Detailed breakdown of bespoke tailoring services, mosquito mesh installation, and track engineering.</p>
     </section>
 
@@ -740,7 +775,7 @@ const ServicesPage = ({ setActiveTab }) => (
     <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '40px', alignItems: 'center', marginBottom: '70px' }}>
       <img src={"https://cb.scene7.com/is/image/Crate/cb_dCL_20220913_CurtainCollections_Lindstrom?wid=1609&qlt=80&op_sharpen=1&bfc=on"} alt="Stitching Service" style={{ width: '100%', borderRadius: '10px', border: '1px solid #333' }} />
       <div>
-        <h2 className="gold-text" style={{ fontSize: '2rem', marginBottom: '15px' }}>Premium Curtain Collection</h2>
+        <h2 className="gold-text" style={{ fontSize: '1.08rem', marginBottom: '15px' }}>Premium Curtain Collection</h2>
         <p style={{ color: '#aaa', lineHeight: '1.8', marginBottom: '15px' }}>
           Transform your interiors with premium-quality curtains designed for elegance, comfort, and privacy. We offer customized curtain solutions to perfectly match every room and style.
         </p>
@@ -756,7 +791,7 @@ const ServicesPage = ({ setActiveTab }) => (
     {/* Section 4: Mosquito Window Nets */}
     <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '40px', alignItems: 'center', marginBottom: '70px' }}>
       <div>
-        <h2 className="gold-text" style={{ fontSize: '2rem', marginBottom: '15px' }}>2. Mosquito Window Nets</h2>
+        <h2 className="gold-text" style={{ fontSize: '1.08rem', marginBottom: '15px' }}>2. Mosquito Window Nets</h2>
         <p style={{ color: '#aaa', lineHeight: '1.8', marginBottom: '15px' }}>
           Keep your home fresh and insect-free with durable mosquito window nets. Designed for maximum ventilation while preventing mosquitoes, flies, and other insects from entering.
         </p>
@@ -772,9 +807,8 @@ const ServicesPage = ({ setActiveTab }) => (
 
     {/* Section 5: Deep Service 3 - Thermal & 100% Blackout Line */}
     <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '40px', alignItems: 'center', marginBottom: '70px' }}>
-      <img src={"https://cpimg.tistatic.com/07971043/b/4/Door-Magnetic-Mosquito-Net.jpg"} alt="Blackout Service" style={{ width: '100%', borderRadius: '10px', border: '1px solid #333' }} />
-      <div>
-        <h2 className="gold-text" style={{ fontSize: '2rem', marginBottom: '15px' }}>3. Mosquito Window Nets</h2>
+         <div>
+        <h2 className="gold-text" style={{ fontSize: '1.08rem', marginBottom: '15px' }}>3. Mosquito Window Nets</h2>
         <p style={{ color: '#aaa', lineHeight: '1.8', marginBottom: '15px' }}>
           Keep your home fresh and insect-free with durable mosquito window nets. Designed for maximum ventilation while preventing mosquitoes, flies, and other insects from entering.
         </p>
@@ -785,6 +819,8 @@ const ServicesPage = ({ setActiveTab }) => (
           <li>Easy to Clean & Maintain</li>
         </ul>
       </div>
+       <img src={"https://cpimg.tistatic.com/07971043/b/4/Door-Magnetic-Mosquito-Net.jpg"} alt="Blackout Service" style={{ width: '100%', borderRadius: '10px', border: '1px solid #333' }} />
+
     </section>
 
     {/* Section 8: Commercial Window Solutions */}
@@ -807,7 +843,7 @@ const ServicesPage = ({ setActiveTab }) => (
 
     {/* Section 10: Service CTA */}
     <section style={{ textAlign: 'center', background: '#0e0e0e', padding: '50px 20px', borderRadius: '12px', border: '1px solid #333' }}>
-      <h2 className="gold-text" style={{ fontSize: '2.2rem', marginBottom: '15px' }}>Need a Service Consultation?</h2>
+      <h2 className="gold-text" style={{ fontSize: '2.0rem', marginBottom: '15px' }}>Need a Service Consultation?</h2>
       <p style={{ color: '#aaa', marginBottom: '25px' }}>Get in touch with our technicians for an accurate on-site quote.</p>
       <button className="btn-gold" style={{ padding: '14px 35px' }} onClick={() => setActiveTab('contact')}>Book Service Visit</button>
     </section>
@@ -832,7 +868,7 @@ const GalleryPage = ({ setActiveTab, uploadedPhotos }) => (
     {/* Section 1: Intro */}
     <section style={{ textAlign: 'center', marginBottom: '60px' }}>
       <span className="section-badge">Visual Showcase</span>
-      <h1 className="gold-text" style={{ fontSize: '3rem', marginBottom: '10px' }}>Design & Installation Gallery</h1>
+      <h1 className="gold-text" style={{ fontSize: '2.0rem', marginBottom: '10px' }}>Design & Installation Gallery</h1>
       <p style={{ color: '#aaa', fontSize: '1.1rem' }}>Browse high-resolution photographs of our real customer drape setups and mosquito screen installations.</p>
     </section>
 
@@ -887,7 +923,7 @@ const GalleryPage = ({ setActiveTab, uploadedPhotos }) => (
 
     {/* Section 7: Pleat Style Comparison */}
     <section style={{ marginBottom: '70px', textAlign: 'center' }}>
-      <h2 className="gold-text" style={{ fontSize: '2rem', marginBottom: '25px' }}>2. Heading & Pleat Styling Options</h2>
+      <h2 className="gold-text" style={{ marginBottom: '15px' }}>2. Heading & Pleat Styling Options</h2>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
         <div style={{ padding: '25px', background: '#121212', border: '1px solid #222', borderRadius: '8px' }}><h4 className="gold-text">Pinch Pleat</h4><p style={{ color: '#888', fontSize: '0.85rem', marginTop: '5px' }}>Traditional tailored luxury</p></div>
         <div style={{ padding: '25px', background: '#121212', border: '1px solid #222', borderRadius: '8px' }}><h4 className="gold-text">Grommet Ring</h4><p style={{ color: '#888', fontSize: '0.85rem', marginTop: '5px' }}>Modern casual look</p></div>
@@ -905,7 +941,7 @@ const GalleryPage = ({ setActiveTab, uploadedPhotos }) => (
 
     {/* Section 10: Gallery CTA */}
     <section style={{ background: '#0e0e0e', padding: '50px 20px', borderRadius: '12px', border: '1px solid #333', textAlign: 'center' }}>
-      <h2 className="gold-text" style={{ fontSize: '2.2rem', marginBottom: '15px' }}>Inspired By Our Gallery?</h2>
+      <h2 className="gold-text" style={{ fontSize: '2.0rem', marginBottom: '15px' }}>Inspired By Our Gallery?</h2>
       <p style={{ color: '#aaa', marginBottom: '25px' }}>Let us tailor these exact drapery and net styles for your windows.</p>
       <button className="btn-gold" style={{ padding: '14px 35px' }} onClick={() => setActiveTab('contact')}>Book Measurement Visit</button>
     </section>
@@ -922,7 +958,7 @@ const ContactPage = ({ customerPhoto, photoPreview, onPhotoUpload, onSubmitPhoto
     {/* Section 1: Intro */}
     <section style={{ textAlign: 'center', marginBottom: '50px' }}>
       <span className="section-badge">Get In Touch</span>
-      <h1 className="gold-text" style={{ fontSize: '3rem', marginBottom: '10px' }}>Contact Jillu Curtains</h1>
+      <h1 className="gold-text" style={{ fontSize: '2.0rem', marginBottom: '10px' }}>Contact Jillu Curtains</h1>
       <p style={{ color: '#aaa' }}>Book a technician measurement visit or request instant price estimates.</p>
     </section>
 
@@ -935,7 +971,7 @@ const ContactPage = ({ customerPhoto, photoPreview, onPhotoUpload, onSubmitPhoto
           <input value={contactPhone} onChange={(e) => onContactChange('phone', e.target.value)} type="tel" placeholder="Phone Number" style={{ padding: '14px', background: '#080808', border: '1px solid #333', color: '#fff', borderRadius: '4px' }} required />
         </div>
         <input value={contactEmail} onChange={(e) => onContactChange('email', e.target.value)} type="email" placeholder="Email Address (optional)" style={{ padding: '14px', background: '#080808', border: '1px solid #333', color: '#fff', borderRadius: '4px' }} />
-        <select value={contactInterest} onChange={(e) => onContactChange('interest', e.target.value)} style={{ padding: '14px', background: '#080808', border: '1px solid #333', color: contactInterest ? '#fff' : '#aaa', borderRadius: '4px' }} required>
+        <select value={contactInterest} onChange={(e) => onContactChange('interest', e.target.value)} type="interest" placeholder="Primary interest (optional)" style={{ padding: '14px', background: '#080808', border: '1px solid #333', color: contactInterest ? '#fff' : '#aaa', borderRadius: '4px' }}>
           <option value="">Select Primary Interest</option>
           <option value="Custom Window Drapes">Custom Window Drapes</option>
           <option value="Mosquito Mesh Doors & Windows">Mosquito Mesh Doors & Windows</option>
@@ -1001,13 +1037,6 @@ const ContactPage = ({ customerPhoto, photoPreview, onPhotoUpload, onSubmitPhoto
       <h3 className="gold-text" style={{ marginBottom: '10px' }}>Need Urgent Quotation?</h3>
       <p style={{ color: '#888' }}>WhatsApp us your approximate window measurements for an instant estimated price range.</p>
     </section>
-
-    {/* Section 8: Safety & Hygiene Protocol */}
-    <section style={{ background: '#0e0e0e', padding: '25px', borderRadius: '8px', border: '1px solid #222', textAlign: 'center', marginBottom: '50px' }}>
-      <h4 className="gold-text" style={{ margin: '0 0 8px 0' }}>Clean Installation Guarantee</h4>
-      <p style={{ color: '#888', margin: 0, fontSize: '0.9rem' }}>Our installation crews use dust-catch drill attachments to leave your floors spotless.</p>
-    </section>
-
     {/* Section 9: Reschedule Policy */}
     <section style={{ textAlign: 'center', marginBottom: '50px' }}>
       <h4 className="gold-text">Flexible Scheduling</h4>
