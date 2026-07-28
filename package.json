@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "jszip": "^3.10.1",
+    "react-router-dom": "^7.18.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.4"
+  }
+}

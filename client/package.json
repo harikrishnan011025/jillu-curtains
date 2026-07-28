@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://rubzz2957.github.io/jillu",
+  "homepage": "https://harikrishnan011025.github.io/jillu-curtains",
   "dependencies": {
     "jszip": "^3.10.1",
     "react": "^18.2.0",
@@ -19,9 +19,6 @@
     "deploy": "gh-pages -d build"
   },
   "proxy": "http://localhost:3000",
-  "devDependencies": {
-    "gh-pages": "^6.3.0"
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -33,5 +30,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
