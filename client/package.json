@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://harikrishnan011025.github.io/jillu-curtains",
+  "homepage": ".",
   "dependencies": {
     "jszip": "^3.10.1",
     "react": "^18.2.0",
