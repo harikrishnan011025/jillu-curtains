@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/jillu-curtains/static/css/main.7769a715.css",
-    "main.js": "/jillu-curtains/static/js/main.00fd40d2.js",
-    "static/media/WhatsApp Image 2026-07-20 at 9.49.24 PM.jpeg": "/jillu-curtains/static/media/WhatsApp Image 2026-07-20 at 9.49.24 PM.0cb6d21e4a795977c705.jpeg",
-    "index.html": "/jillu-curtains/index.html",
-    "main.7769a715.css.map": "/jillu-curtains/static/css/main.7769a715.css.map",
-    "main.00fd40d2.js.map": "/jillu-curtains/static/js/main.00fd40d2.js.map"
+    "main.css": "./static/css/main.7769a715.css",
+    "main.js": "./static/js/main.97ec1280.js",
+    "static/media/WhatsApp Image 2026-07-20 at 9.49.24 PM.jpeg": "./static/media/WhatsApp Image 2026-07-20 at 9.49.24 PM.0cb6d21e4a795977c705.jpeg",
+    "index.html": "./index.html",
+    "main.7769a715.css.map": "./static/css/main.7769a715.css.map",
+    "main.97ec1280.js.map": "./static/js/main.97ec1280.js.map"
   },
   "entrypoints": [
     "static/css/main.7769a715.css",
-    "static/js/main.00fd40d2.js"
+    "static/js/main.97ec1280.js"
   ]
 }
